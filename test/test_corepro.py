@@ -15,4 +15,4 @@ class AbAccountTest(TestBase):
 
     def test_list(self):
         accounts = Account.listItems(2654)
-        self.assertTrue(accounts.length > 0)
+        self.assertTrue(len(accounts) > 0)

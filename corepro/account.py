@@ -1,9 +1,9 @@
 __author__ = 'socialmoneydev'
-from models.modelBase import ModelBase
+from models.jsonBase import JsonBase
 from utils.requestor import Requestor
 from connection import Connection
 
-class Account(ModelBase) :
+class Account(JsonBase) :
 
     def __init__(self):
         self.customerId = None
@@ -32,6 +32,11 @@ class Account(ModelBase) :
         self.category = None
         self.subCategory = None
         self.miscellaneous = None
+        self.requestId = None
+
+
+    # def fromJson(self, json, classDefs):
+    #     super(JsonBase, self).fromJson(json, classDefs)
 
     @staticmethod
     def listItems(customerId, connection = None, loggingObject = None):
@@ -41,7 +46,7 @@ class Account(ModelBase) :
 
     def list(self, connection = None, loggingObject = None):
         connection = connection or Connection.createFromConfig()
-        rv = Requestor.get("/account/list/{0}".format(self.customerId), Account, connection, loggingObject)
+        rv = Requestor().get("/account/list/{0}".format(self.customerId), Account, connection, loggingObject)
         return rv
 
     @staticmethod
@@ -53,5 +58,5 @@ class Account(ModelBase) :
 
     def get(self, connection = None, loggingObject = None):
         connection = connection or Connection.createFromConfig()
-        rv = Requestor.get("/account/get/{0}/{1}".format(self.customerId, self.accountId), Account, connection, loggingObject)
+        rv = Requestor().get("/account/get/{0}/{1}".format(self.customerId, self.accountId), Account, connection, loggingObject)
         return rv

@@ -3,7 +3,7 @@ from ConfigParser import SafeConfigParser
 import os.path
 import base64
 
-class Connection:
+class Connection(object):
 
     defaultApiKey = None
     defaultApiSecret = None

@@ -1,17 +1,18 @@
 __author__ = 'socialmoneydev'
 #from ..connection import Connection
+from ..models.envelope import Envelope
+from ..coreproapiexception import CoreProApiException
 import httplib
+import json
 
-class Requestor:
+class Requestor(object):
 
     SDK_USER_AGENT = "CorePro Python SDK v {0}".format("0.0.1")
 
-    @staticmethod
-    def post(relativeUrl, toPost, classType, connection, loggingObject):
+    def post(self, relativeUrl, toPost, classDef, connection, loggingObject):
         pass
 
-    @staticmethod
-    def get(relativeUrl, classType, connection, loggingObject):
+    def get(self, relativeUrl, classDef, connection, loggingObject):
         #connection.proxyServer = None
         if connection.proxyPort is not None and connection.proxyServer is not None:
             httpConn = httplib.HTTPSConnection(connection.proxyServer, int(connection.proxyPort))
@@ -30,14 +31,26 @@ class Requestor:
         resp = httpConn.getresponse()
         status = resp.status
         body = resp.read()
-        repr(body)
-        return body
+        return self.parseResponse(status, None, body, classDef)
 
-
-
-
-
-
-
-
-
+    def parseResponse(self, status, requestBody, responseBody, classDef):
+        if status == 501:
+            raise 501
+        elif status == 502:
+            raise 502
+        elif status == 503:
+            raise 503
+        elif status == 504:
+            raise 504
+        elif status == 505:
+            raise 505
+        else:
+            parsedJson = json.loads(responseBody)
+            e = Envelope()
+            e.rawRequestBody = requestBody
+            e.rawResponseBody = responseBody
+            e.fromJson(parsedJson, { 'data': classDef })
+            if len(e.errors) > 0:
+                raise CoreProApiException(e.errors)
+            else:
+                return e.data
