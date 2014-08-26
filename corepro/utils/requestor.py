@@ -1,5 +1,5 @@
 __author__ = 'socialmoneydev'
-#from ..connection import Connection
+from ..connection import Connection
 from ..models.envelope import Envelope
 from ..coreproapiexception import CoreProApiException
 import httplib
@@ -13,7 +13,7 @@ class Requestor(object):
         pass
 
     def get(self, relativeUrl, classDef, connection, loggingObject):
-        #connection.proxyServer = None
+        connection = connection or Connection.createFromConfig()
         if connection.proxyPort is not None and connection.proxyServer is not None:
             httpConn = httplib.HTTPSConnection(connection.proxyServer, int(connection.proxyPort))
             httpConn.set_tunnel(connection.domainName, 443)

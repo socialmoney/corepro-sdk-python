@@ -1,7 +1,6 @@
 __author__ = 'socialmoneydev'
-import unittest
 import sys, os
-
+import unittest
 import os.path
 
 class TestBase(unittest.TestCase):

@@ -1,7 +1,6 @@
 __author__ = 'socialmoneydev'
 from models.jsonBase import JsonBase
 from utils.requestor import Requestor
-from connection import Connection
 
 class Account(JsonBase) :
 
@@ -45,7 +44,6 @@ class Account(JsonBase) :
         return a.list(connection, loggingObject)
 
     def list(self, connection = None, loggingObject = None):
-        connection = connection or Connection.createFromConfig()
         rv = Requestor().get("/account/list/{0}".format(self.customerId), Account, connection, loggingObject)
         return rv
 
@@ -57,6 +55,5 @@ class Account(JsonBase) :
         return a.get(connection, loggingObject)
 
     def get(self, connection = None, loggingObject = None):
-        connection = connection or Connection.createFromConfig()
         rv = Requestor().get("/account/get/{0}/{1}".format(self.customerId, self.accountId), Account, connection, loggingObject)
         return rv

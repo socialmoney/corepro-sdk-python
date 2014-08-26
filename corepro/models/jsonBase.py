@@ -1,11 +1,15 @@
 __author__ = 'socialmoneydev'
 
-import json
+import urllib
 
 class JsonBase(object):
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def escape(val):
+        return urllib.quote(val)
 
     def fromJson(self, json, classDefs):
         if json is not None:
