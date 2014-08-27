@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# configs possibly containing password(s)
+config.ini
+
 # C extensions
 *.so
 

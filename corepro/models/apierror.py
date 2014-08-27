@@ -6,8 +6,5 @@ class ApiError(JsonBase):
         self.code = None
         self.message = None
 
-    def __repr__(self):
-        return "code: " + self.code + ", message: " + self.message
-
     def __str__(self):
-        return repr(self)
+        return "code: {0}, message: {1}".format(self.code, self.message)

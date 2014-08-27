@@ -1,19 +1,20 @@
 __author__ = 'socialmoneydev'
-
-import urllib
+import json
 
 class JsonBase(object):
 
     def __init__(self):
         pass
 
-    @staticmethod
-    def escape(val):
-        return urllib.quote(val)
+    def fromJson(self, jsonString, classDefs):
+        dct = {}
+        if jsonString is not None:
+            dct = json.loads(jsonString)
+        return self.fromDict(dct, classDefs)
 
-    def fromJson(self, json, classDefs):
-        if json is not None:
-            for k,v in json.items():
+    def fromDict(self, dct, classDefs):
+        if dct is not None:
+            for k,v in dct.items():
                 if classDefs is None or k not in classDefs:
                     if k in self.__dict__:
                         self.__dict__[k] = v
@@ -23,21 +24,25 @@ class JsonBase(object):
                         arr = []
                         for item in v:
                             obj = ct()
-                            obj.fromJson(item, None)
+                            obj.fromDict(item, None)
                             arr.append(obj)
                         self.__dict__[k] = arr
                     else:
                         obj = ct()
-                        obj.fromJson(v, None)
+                        obj.fromDict(v, None)
                         self.__dict__[k] = obj
         return self
 
     def toJson(self):
+        dct = self.toDict()
+        return json.dumps(dct)
+
+    def toDict(self):
         d = dict()
-        for k,v in self.__dict__:
+        for k,v in self.__dict__.items():
             if v is not None:
                 if isinstance(v, JsonBase):
-                    d[k] = v.toJson()
+                    d[k] = v.toDict()
                 elif isinstance(v, list):
                     if len(v) > 0:
                         arr = []

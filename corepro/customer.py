@@ -6,11 +6,14 @@ from account import Account
 from externalaccount import ExternalAccount
 from models.customeraddress import CustomerAddress
 from models.customerphone import CustomerPhone
-
+from models.customeridonly import CustomerIdOnly
+from models.customerverifyrequest import CustomerVerifyRequest
 
 class Customer(JsonBase):
 
     def __init__(self):
+        self.requestId = None
+        self.customerCount = None
         self.customerId = None
         self.firstName = None
         self.middleName = None
@@ -56,8 +59,7 @@ class Customer(JsonBase):
         return c.get(connection, loggingObject)
 
     def get(self, connection = None, loggingObject = None):
-        rv = Requestor().get("/customer/get/{0}".format(self.customerId), Customer, connection, loggingObject)
-        return rv
+        return Requestor().get("/customer/get/{0}".format(self.customerId), Customer, connection, loggingObject)
 
     @staticmethod
     def getItemByTag(tag, connection = None, loggingObject = None):
@@ -66,5 +68,35 @@ class Customer(JsonBase):
         return c.getByTag(connection, loggingObject)
 
     def getByTag(self, connection = None, loggingObject = None):
-        rv = Requestor().get("/customer/getbytag/{0}".format(JsonBase.escape(self.tag)), Customer, connection, loggingObject)
-        return rv
+        return Requestor().get("/customer/getbytag/{0}".format(Requestor.escape(self.tag)), Customer, connection, loggingObject)
+
+    @staticmethod
+    def listItems(pageNumber = 0, pageSize = 200, connection = None, loggingObject = None):
+        return Customer().list(pageNumber, pageSize, connection, loggingObject)
+
+    def list(self, pageNumber = 0, pageSize = 200, connection = None, loggingObject = None):
+        return Requestor().get("/customer/list", Customer, connection, loggingObject)
+
+    def create(self, connection = None, loggingObject = None):
+        cid = Requestor().post("/customer/create", CustomerIdOnly, self, connection, loggingObject)
+        return cid.customerId
+
+    def initiate(self, connection = None, loggingObject = None):
+        return Requestor().post("/customer/initiate", CustomerIdOnly, self, connection, loggingObject)
+
+    def verify(self, verificationId, answers, connection = None, loggingObject = None):
+        cvr = CustomerVerifyRequest()
+        cvr.verificationId = verificationId
+        cvr.answers = answers
+        return cvr.verify(connection, loggingObject)
+
+    def update(self, connection = None, loggingObject = None):
+        cid = Requestor().post("/customer/update", CustomerIdOnly, self, connection, loggingObject)
+        return cid.customerId
+
+    def deactivate(self, connection = None, loggingObject = None):
+        cid = Requestor().post("/customer/deactivate", CustomerIdOnly, self, connection, loggingObject)
+        return cid.customerId
+
+    def search(self, pageNumber = 0, pageSize = 200, connection = None, loggingObject = None):
+        return Requestor().post("/customer/search/?pageNumber={0}&pageSize={1}".format(pageNumber, pageSize), Customer, self, connection, loggingObject)
