@@ -12,7 +12,7 @@ class TestAbAccountPrepaid(TestBase):
     def test_create(self):
         a = Account()
         a.customerId = TestBase.prepaidCustomerId
-        a.tag = "act" + TestBase.timestamp
+        a.tag = "act python " + TestBase.timestamp
         a.type = 'Client'
         a.category = 'CategoryA'
         a.subCategory = 'CategoryB'
@@ -25,6 +25,10 @@ class TestAbAccountPrepaid(TestBase):
 
     def test_get(self):
         a = Account.getItem(TestBase.prepaidCustomerId, TestBase.prepaidAccountId, TestBase.prepaidConn, TestBase.timestamp)
+        self.assertTrue(a.customerId == TestBase.prepaidCustomerId)
+
+    def test_getbytag(self):
+        a = Account.getItemByTag(TestBase.prepaidCustomerId, "act python " + TestBase.timestamp, TestBase.prepaidConn, TestBase.timestamp)
         self.assertTrue(a.customerId == TestBase.prepaidCustomerId)
 
     def test_list(self):

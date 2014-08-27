@@ -20,7 +20,7 @@ class TestAaCustomerPrepaid(TestBase):
         c.isDocumentsAccepted = True
         c.isSubjectToBackupWithholding = False
         c.isOptedInToBankCommunication = False
-        c.tag = "sdb" + TestBase.timestamp
+        c.tag = "sdb python " + TestBase.timestamp
         c.taxId = '900000283'
 
         TestBase.prepaidCustomerId = c.create(TestBase.prepaidConn, TestBase.loggingObject)
@@ -31,7 +31,7 @@ class TestAaCustomerPrepaid(TestBase):
         self.assertTrue(c.customerId == TestBase.prepaidCustomerId)
 
     def test_getByTag(self):
-        c = Customer.getItemByTag("sdb" + TestBase.timestamp, TestBase.prepaidConn, TestBase.loggingObject)
+        c = Customer.getItemByTag("sdb python " + TestBase.timestamp, TestBase.prepaidConn, TestBase.loggingObject)
         self.assertTrue(c.customerId == TestBase.prepaidCustomerId)
 
     def test_list(self):

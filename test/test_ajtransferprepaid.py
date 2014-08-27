@@ -15,6 +15,7 @@ class TestAjTransferPrepaid(TestBase):
         t.fromId = TestBase.prepaidExternalAccountId
         t.toId = TestBase.prepaidAccountId
         t.amount = 1.25
+        t.tag = "tag python " + TestBase.timestamp
         results = t.create(TestBase.prepaidConn, TestBase.loggingObject)
         TestBase.prepaidExternalToInternalTransactionId = results[0].transactionId
         self.assertTrue(TestBase.prepaidExternalToInternalTransactionId > 0)
@@ -25,6 +26,7 @@ class TestAjTransferPrepaid(TestBase):
         t.fromId = TestBase.prepaidAccountId
         t.toId = TestBase.prepaidExternalAccountId
         t.amount = 1.20
+        t.tag = "tag 2 python " + TestBase.timestamp
         results = t.create(TestBase.prepaidConn, TestBase.loggingObject)
         TestBase.prepaidInternalToExternalTransactionId = results[0].transactionId
         self.assertTrue(TestBase.prepaidInternalToExternalTransactionId > 0)

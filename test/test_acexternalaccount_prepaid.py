@@ -13,7 +13,7 @@ class TestAcExternalAccountPrepaid(TestBase):
         ea = ExternalAccount()
         ea.customerId = TestBase.prepaidCustomerId
         ea.nickName = "Ext acct " + TestBase.timestamp
-        ea.tag = "tag " + TestBase.timestamp
+        ea.tag = "tag python " + TestBase.timestamp
         ea.accountNumber = '00001234'
         ea.firstName = 'Jimmy'
         ea.lastName = 'Jameson'
@@ -26,7 +26,7 @@ class TestAcExternalAccountPrepaid(TestBase):
         self.assertTrue(ea.externalAccountId == TestBase.prepaidExternalAccountId)
 
     def test_getbytag(self):
-        ea = ExternalAccount.getItemByTag(TestBase.prepaidCustomerId, "tag " + TestBase.timestamp, TestBase.prepaidConn, TestBase.loggingObject)
+        ea = ExternalAccount.getItemByTag(TestBase.prepaidCustomerId, "tag python " + TestBase.timestamp, TestBase.prepaidConn, TestBase.loggingObject)
         self.assertTrue(ea.externalAccountId == TestBase.prepaidExternalAccountId)
 
     def test_list(self):
