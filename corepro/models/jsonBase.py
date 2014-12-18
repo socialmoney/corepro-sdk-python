@@ -3,6 +3,9 @@ import json
 
 class JsonBase(object):
 
+    def isHashedPayload(self):
+        return False
+
     def __init__(self):
         pass
 
@@ -27,6 +30,13 @@ class JsonBase(object):
                             obj.fromDict(item, None)
                             arr.append(obj)
                         self.__dict__[k] = arr
+                    elif ct().isHashedPayload() == True:
+                        d = {}
+                        for subkey, subitem in v.items():
+                            obj = ct()
+                            obj.fromDict(subitem, None)
+                            d[subkey] = subitem
+                        self.__dict__[k] = d
                     else:
                         obj = ct()
                         obj.fromDict(v, None)

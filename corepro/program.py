@@ -2,9 +2,11 @@ __author__ = 'socialmoneydev'
 
 from models.jsonBase import JsonBase
 from utils.requestor import Requestor
-from models.programinterestrate import ProgramInterestRate
 from models.programlimit import ProgramLimit
-import base64
+from models.programchecking import ProgramChecking
+from models.programecode import ProgramECode
+from models.programprepaid import ProgramPrepaid
+from models.programsavings import ProgramSavings
 
 class Program(JsonBase):
 
@@ -13,13 +15,9 @@ class Program(JsonBase):
         self.name = None
         self.verificationType = None
         self.timeZone = None
-        self.regDFeeAmount = None
-        self.regDMonthlyTransactionWithdrawCountMax = None
-        self.perTransactionWithdrawLimit = None
         self.perUserDailyWithdrawLimit = None
         self.perUserMonthlyWithdrawLimit = None
         self.perProgramDailyWithdrawLimit = None
-        self.perTransactionDepositLimit = None
         self.perUserDailyDepositLimit = None
         self.perUserMonthlyDepositLimit = None
         self.perProgramDailyDepositLimit = None
@@ -29,22 +27,26 @@ class Program(JsonBase):
         self.isInterestEnabled = None
         self.allowedAccountType = None
         self.isRecurringContributionEnabled = None
-        self.interestRates = []
         self.filledDate = None
+        self.perUserExternalAccountCountMax = None
+        self.perUserAccountCountMax = None
+        self.perUserTotalAccountBalanceMax = None
 
     def fromDict(self, dct, classDefs):
         classDefs = classDefs or dict()
-        classDefs['interestRates'] = ProgramInterestRate
 
-        classDefs['perTransactionWithdrawLimit'] = ProgramLimit
         classDefs['perUserDailyWithdrawLimit'] = ProgramLimit
         classDefs['perUserMonthlyWithdrawLimit'] = ProgramLimit
         classDefs['perProgramDailyWithdrawLimit'] = ProgramLimit
 
-        classDefs['perTransactionDepositLimit'] = ProgramLimit
         classDefs['perUserDailyDepositLimit'] = ProgramLimit
         classDefs['perUserMonthlyDepositLimit'] = ProgramLimit
         classDefs['perProgramDailyDepositLimit'] = ProgramLimit
+
+        classDefs['checkingProducts'] = ProgramChecking
+        classDefs['eCodeProducts'] = ProgramECode
+        classDefs['prepaidProducts'] = ProgramPrepaid
+        classDefs['savingsProducts'] = ProgramSavings
 
         super(Program, self).fromDict(dct, classDefs)
 
